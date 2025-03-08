@@ -3,6 +3,7 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 import authRouter from "./routes/authRoute.js";
 
 const app = express();
+app.use(express.json());
 
 app.get("/health", (req, res) => {
     res.status(200).json({ message: "Server health is good." });
