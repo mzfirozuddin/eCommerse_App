@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import { authService } from "../services/authService.js";
 import { hashPassword } from "../utils/authHelper.js";
 import { ROLE } from "../constant.js";
+import logger from "../config/logger.js";
 
 export class AuthController {
     register = async (req, res, next) => {
@@ -40,6 +41,16 @@ export class AuthController {
                 role: ROLE.CUSTOMER,
             };
             const newUser = await authService.registerUser(user);
+            if (!newUser) {
+                const error = createHttpError(
+                    500,
+                    "Error while registering user!",
+                );
+                return next(error);
+            }
+
+            //: logger message
+            logger.info("User Created Successfully.", { id: newUser._id });
 
             //: Return response
             res.status(201).json({
@@ -47,6 +58,7 @@ export class AuthController {
                 msg: "User Created Successfully.",
             });
         } catch (err) {
+            logger.error("ERROR: Register User", { err });
             next(err);
             return;
         }
