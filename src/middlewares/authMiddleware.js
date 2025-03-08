@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import logger from "../config/logger";
-import { config } from "../config/config";
-import { authService } from "../services/authService";
+import logger from "../config/logger.js";
+import { config } from "../config/config.js";
+import { authService } from "../services/authService.js";
 
 export const verifyJWT = async (req, res, next) => {
     try {
